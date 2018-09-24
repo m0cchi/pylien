@@ -78,6 +78,23 @@ class Macro(Function):
                 env.set_variable(arg, next(args))
         return env
 
+class DynamicFunction(Function):
+    def __init__(self, args, body):
+        super(DynamicFunction, self).set_args(args)
+        self.body = body
+
+    def call(self, env, body):
+        env = super(DynamicFunction, self).parse_args(env, body)
+
+        from pylien.parser.semantic import SemanticAnalyzer
+        s = SemanticAnalyzer(env)
+
+        ret = Unit(AtomicType.NIL)
+        for p in self.body.value:
+            ret = s.eval(p)
+
+        return ret
+
 class Environment(object):
     def __init__(self, parent=None):
         self.parent = parent
