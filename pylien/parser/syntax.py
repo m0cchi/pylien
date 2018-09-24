@@ -16,6 +16,12 @@ class SyntaxAnalyzer(object):
             elif unit.ltype == AtomicType.LP:
                 s = SyntaxAnalyzer(self.lexical_analyzer)
                 value.append(s.parse_list())
+            elif unit.ltype in [AtomicType.QUOTE, AtomicType.QUASI_QUOTE]:
+                quote_value = next(self.parse())
+                if quote_value.ltype == AtomicType.EOF:
+                    raise SyntaxException()
+                unit.value = quote_value
+                value.append(unit)
             elif unit.ltype == AtomicType.EOF:
                 raise SyntaxException()
             else:
@@ -29,8 +35,8 @@ class SyntaxAnalyzer(object):
                 break
             if unit.ltype == AtomicType.LP:
                 yield self.parse_list()
-            elif unit.ltype == [AtomicType.QUOTE, AtomicType.QUASI_QUOTE]:
-                quote_value = self.parse()
+            elif unit.ltype in [AtomicType.QUOTE, AtomicType.QUASI_QUOTE]:
+                quote_value = next(self.parse())
                 if quote_value.ltype == AtomicType.EOF:
                     raise SyntaxException()
                 unit.value = quote_value
