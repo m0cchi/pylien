@@ -2,12 +2,12 @@ from pylien.model import Function, Macro, Unit, AtomicType, env, DynamicFunction
 
 class PrintFn(Function):
     def __init__(self):
-        super(PrintFn, self).set_args([Function.REST, 'args'])
+        super(PrintFn, self).set_args([Function.REST, 'print args'])
 
     def call(self, env, body):
         env = super(PrintFn, self).parse_args(env, body)
         import sys
-        args = env.get_variable('args')
+        args = env.get_variable(self.args[1])
         for arg in args.value:
             sys.stdout.write(str(arg.value))
         sys.stdout.flush()
