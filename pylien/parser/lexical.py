@@ -85,7 +85,7 @@ class LexicalAnalyzer(object):
                 yield Unit(AtomicType.EOF)
             if ch == LexicalAnalyzer.COMMENT:
                 while True:
-                    ch = self.read(1)
+                    ch = self.read()
                     if len(ch) == 0:
                         return Unit(AtomicType.EOF)
                     if ch == '\n':
