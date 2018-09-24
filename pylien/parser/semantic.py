@@ -9,10 +9,10 @@ class SemanticAnalyzer(object):
         first = unit.value.pop(0)
         first = self.eval(first)
         func_unit = self.env.get_function(first.value)
+        ret = func_unit.value.call(self.env, unit)
         if func_unit.ltype == AtomicType.MACRO:
-            pass
-        else:
-            return func_unit.value.call(self.env, unit)
+            self.eval(ret)
+        return ret
 
     def eval(self, unit):
         if unit.ltype == AtomicType.LIST:

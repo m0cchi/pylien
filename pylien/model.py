@@ -62,6 +62,22 @@ class Function(object):
                 env.set_variable(arg, next(args))
         return env
 
+class Macro(Function):
+
+    def parse_args(self, env, body):
+        env = Environment(env)
+        args = iter(body.value)
+        defargs = iter(self.args)
+        for arg in defargs:
+            if arg == Function.REST:
+                v = []
+                for a in args:
+                    v.append(a)
+                env.set_variable(next(defargs), Unit(AtomicType.LIST, v))
+            else:
+                env.set_variable(arg, next(args))
+        return env
+
 class Environment(object):
     def __init__(self, parent=None):
         self.parent = parent
