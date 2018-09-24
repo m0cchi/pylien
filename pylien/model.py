@@ -93,7 +93,8 @@ class Environment(object):
         parent = self.parent
         while parent != None:
             if varname in parent.variables:
-                return parent[varname]
+                return parent.variables[varname]
+            parent = parent.parent
         raise NameException()
 
     def set_function(self, funcname, value):
@@ -105,6 +106,7 @@ class Environment(object):
         parent = self.parent
         while parent != None:
             if funcname in parent.functions:
-                return parent[funcname]
+                return parent.functions[funcname]
+            parent = parent.parent
         raise NameException()
 env = Environment()
