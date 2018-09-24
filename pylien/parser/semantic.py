@@ -7,7 +7,8 @@ class SemanticAnalyzer(object):
 
     def eval_list(self, unit):
         first = unit.value.pop(0)
-        first = self.eval(first)
+        if first.ltype == AtomicType.LIST:
+            first = self.eval_list(first)
         func_unit = self.env.get_function(first.value)
         ret = func_unit.value.call(self.env, unit)
         if func_unit.ltype == AtomicType.MACRO:
@@ -19,6 +20,8 @@ class SemanticAnalyzer(object):
             return self.eval_list(unit)
         elif unit.ltype in [AtomicType.QUOTE, AtomicType.QUASI_QUOTE]:
             return unit.value
+        elif unit.ltype == AtomicType.SYMBOL:
+            return self.env.get_variable(unit.value)
         else:
             return unit
 
