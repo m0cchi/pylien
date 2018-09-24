@@ -17,6 +17,8 @@ class SemanticAnalyzer(object):
     def eval(self, unit):
         if unit.ltype == AtomicType.LIST:
             return self.eval_list(unit)
+        elif unit.ltype in [AtomicType.QUOTE, AtomicType.QUASI_QUOTE]:
+            return unit.value
         else:
             return unit
 
