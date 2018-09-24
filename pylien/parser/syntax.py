@@ -41,6 +41,6 @@ class SyntaxAnalyzer(object):
                     raise SyntaxException()
                 unit.value = quote_value
                 yield unit
-            elif unit.ltype in [AtomicType.SYMBOL, AtomicType.NUMBER, AtomicType.LETTER]:
-                pass
+            else:
+                yield unit
         return Unit(AtomicType.EOF)
